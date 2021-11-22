@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/grafana/grafana/pkg/services/secrets/database"
+	"github.com/grafana/grafana/pkg/services/secrets/fakes"
 
 	gokit_log "github.com/go-kit/kit/log"
 	"github.com/go-openapi/strfmt"
@@ -18,7 +18,6 @@ import (
 	"github.com/grafana/grafana/pkg/services/ngalert/logging"
 	"github.com/grafana/grafana/pkg/services/ngalert/metrics"
 	"github.com/grafana/grafana/pkg/services/ngalert/store"
-	secretsManager "github.com/grafana/grafana/pkg/services/secrets/manager"
 	"github.com/grafana/grafana/pkg/services/sqlstore"
 	"github.com/grafana/grafana/pkg/setting"
 	"github.com/prometheus/alertmanager/api/v2/models"
@@ -49,7 +48,7 @@ func setupAMTest(t *testing.T) *Alertmanager {
 	}
 
 	kvStore := newFakeKVStore(t)
-	secretsService := secretsManager.SetupTestService(t, database.ProvideSecretsStore(sqlStore))
+	secretsService := fakes.NewFakeSecretsService()
 	decryptFn := secretsService.GetDecryptedValue
 	am, err := newAlertmanager(1, cfg, s, kvStore, &NilPeer{}, decryptFn, m)
 	require.NoError(t, err)

@@ -12,7 +12,6 @@ import (
 	"github.com/grafana/grafana/pkg/services/datasources"
 	"github.com/grafana/grafana/pkg/services/oauthtoken"
 	"github.com/grafana/grafana/pkg/services/secrets/fakes"
-	secretsManager "github.com/grafana/grafana/pkg/services/secrets/manager"
 	"github.com/grafana/grafana/pkg/tsdb/legacydata"
 	"github.com/stretchr/testify/require"
 )
@@ -34,7 +33,7 @@ func TestHandleRequest(t *testing.T) {
 			actualReq = req
 			return backend.NewQueryDataResponse(), nil
 		}
-		secretsService := secretsManager.SetupTestService(t, fakes.NewFakeSecretsStore())
+		secretsService := fakes.NewFakeSecretsService()
 		dsService := datasources.ProvideService(bus.New(), nil, secretsService)
 		s := ProvideService(client, nil, dsService)
 

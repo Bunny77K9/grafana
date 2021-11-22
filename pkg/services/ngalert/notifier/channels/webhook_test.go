@@ -10,8 +10,6 @@ import (
 	"github.com/grafana/grafana/pkg/components/simplejson"
 	"github.com/grafana/grafana/pkg/models"
 	"github.com/grafana/grafana/pkg/services/secrets/fakes"
-	secretsManager "github.com/grafana/grafana/pkg/services/secrets/manager"
-
 	"github.com/prometheus/alertmanager/notify"
 	"github.com/prometheus/alertmanager/template"
 	"github.com/prometheus/alertmanager/types"
@@ -192,7 +190,7 @@ func TestWebhookNotifier(t *testing.T) {
 				SecureSettings: secureSettings,
 			}
 
-			secretsService := secretsManager.SetupTestService(t, fakes.NewFakeSecretsStore())
+			secretsService := fakes.NewFakeSecretsService()
 			decryptFn := secretsService.GetDecryptedValue
 			pn, err := NewWebHookNotifier(m, tmpl, decryptFn)
 			if c.expInitError != "" {

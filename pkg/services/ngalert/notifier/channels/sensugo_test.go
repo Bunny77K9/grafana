@@ -11,8 +11,6 @@ import (
 	"github.com/grafana/grafana/pkg/components/simplejson"
 	"github.com/grafana/grafana/pkg/models"
 	"github.com/grafana/grafana/pkg/services/secrets/fakes"
-	secretsManager "github.com/grafana/grafana/pkg/services/secrets/manager"
-
 	"github.com/prometheus/alertmanager/notify"
 	"github.com/prometheus/alertmanager/types"
 	"github.com/prometheus/common/model"
@@ -143,7 +141,7 @@ func TestSensuGoNotifier(t *testing.T) {
 				SecureSettings: secureSettings,
 			}
 
-			secretsService := secretsManager.SetupTestService(t, fakes.NewFakeSecretsStore())
+			secretsService := fakes.NewFakeSecretsService()
 			decryptFn := secretsService.GetDecryptedValue
 			sn, err := NewSensuGoNotifier(m, tmpl, decryptFn)
 			if c.expInitError != "" {

@@ -14,7 +14,6 @@ import (
 	"github.com/grafana/grafana/pkg/components/simplejson"
 	"github.com/grafana/grafana/pkg/models"
 	"github.com/grafana/grafana/pkg/services/secrets/fakes"
-	secretsManager "github.com/grafana/grafana/pkg/services/secrets/manager"
 )
 
 func TestLineNotifier(t *testing.T) {
@@ -92,7 +91,7 @@ func TestLineNotifier(t *testing.T) {
 				SecureSettings: secureSettings,
 			}
 
-			secretsService := secretsManager.SetupTestService(t, fakes.NewFakeSecretsStore())
+			secretsService := fakes.NewFakeSecretsService()
 			decryptFn := secretsService.GetDecryptedValue
 			pn, err := NewLineNotifier(m, tmpl, decryptFn)
 			if c.expInitError != "" {
